@@ -1,4 +1,4 @@
-package com.youcode.gameyou.Service.interfaces;
+package com.youcode.gameyou.Service.Interfaces;
 
 import com.youcode.gameyou.Request.Auth.LoginRequest;
 import com.youcode.gameyou.Request.Auth.RegisterRequest;
