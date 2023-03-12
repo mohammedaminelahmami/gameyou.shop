@@ -1,92 +1,47 @@
 package com.youcode.gameyou.Security;
 
-import com.youcode.gameyou.Repository.UserParentRepository;
-import com.youcode.gameyou.Service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.youcode.gameyou.Enum.Role;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtException;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtDecoder jwtDecoder;
-    private final UserService userService;
-    private final UserParentRepository userParentRepository;
-
+    private final JwtAuthConverter jwtAuthConverter;
     private final String[] PUBLIC_ENDPOINTS = {
-        "/api/auth/**",
+        "/api/public/**",
     };
-
-    @Autowired
-    public SecurityConfig(@Lazy JwtDecoder jwtDecoder, UserService userService, UserParentRepository userParentRepository) {
-        this.jwtDecoder = jwtDecoder;
-        this.userService = userService;
-        this.userParentRepository = userParentRepository;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(PUBLIC_ENDPOINTS).permitAll())
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-                .httpBasic(Customizer.withDefaults())
-                .build();
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests()
+                .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+                .requestMatchers("/api/admin/**").hasRole(Role.ROLE_ADMIN.toString())
+                .requestMatchers("/api/seller/**").hasRole(Role.ROLE_SELLER.toString())
+                .requestMatchers("/api/client/**").hasRole(Role.ROLE_CLIENT.toString())
+                .and()
+            .oauth2ResourceServer()
+                .jwt()
+                .jwtAuthenticationConverter(jwtAuthConverter);
+            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        return http.build();
     }
 
     @Bean
-    public JwtDecoder jwtDecoder () {
-        return new JwtDecoder() {
-            @Override
-            public Jwt decode(String token) throws JwtException {
-                return null;
-            }
-        };
+    public JwtDecoder jwtDecoder() {
+        // return an instance of JwtDecoder that can decode the JWT token
+        return NimbusJwtDecoder.withJwkSetUri("http://localhost:8005/auth/realms/gameyou_realm/protocol/openid-connect/certs").build();
     }
-
-//    @Bean
-//    public UserDetailsService userDetailsService(){
-//        return new UserDetailsService(){
-//            @Override
-//            public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//                return userService.findUser(email);
-//            }
-//        };
-//    }
-
-    @Bean
-    public UserDetailsService userDetailsService(){
-        return username -> userParentRepository.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-    }
-
-//    @Bean
-//    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
-//        var authProvider = new DaoAuthenticationProvider();
-//        authProvider.setPasswordEncoder(passwordEncoder);
-//        authProvider.setUserDetailsService(userDetailsService);
-//        return new ProviderManager(authProvider);
-//    }
-
 }

@@ -1,4 +1,5 @@
 services:
+    # DB
     db:
         container_name: gameyou_db
         image: mysql
@@ -10,5 +11,16 @@ services:
             - db_volumes:/var/lib/mysql
         ports:
             - 3307:3306
+    # Keycloak
+    keycloak:
+        image: jboss/keycloak
+        environment:
+            - KEYCLOAK_USER=admin
+            - KEYCLOAK_PASSWORD=admin
+        ports:
+            - 8005:8080
+        volumes:
+            - keycloak_config:/opt/jboss/keycloak/standalone/configuration
 volumes:
     db_volumes:
+    keycloak_config:

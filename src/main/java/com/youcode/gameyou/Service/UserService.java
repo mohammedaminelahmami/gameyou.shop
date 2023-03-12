@@ -1,19 +1,19 @@
 package com.youcode.gameyou.Service;
 
-import com.youcode.gameyou.Entity.UserParent;
 import com.youcode.gameyou.Repository.UserParentRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
+import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-@RequiredArgsConstructor
-public class UserService {
+@Component
+@AllArgsConstructor
+public class UserService implements UserDetailsService {
     private final UserParentRepository userParentRepository;
-    public User findUser(String email) throws UsernameNotFoundException
-    {
-        UserParent userParent = userParentRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new User(userParent.getEmail(), userParent.getHashedpassword(), userParent.getAuthorities());
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userParentRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
