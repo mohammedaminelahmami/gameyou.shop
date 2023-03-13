@@ -1,7 +1,9 @@
 package com.youcode.gameyou.Entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
+@RequiredArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

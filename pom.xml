@@ -32,12 +32,34 @@
         </dependency>
         <!-- Spring Data Jpa -->
 
+        <!-- Validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <!-- Validation -->
+
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <!-- Spring Security -->
+
+        <!-- Oauth2 Resource Server -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+        <!-- Oauth2 Resource Server -->
+
+        <!-- KeyClock Admin Client -->
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-admin-client</artifactId>
+            <version>20.0.2</version>
+        </dependency>
+        <!-- KeyClock Admin Client -->
 
         <!-- BouncyCastle -->
         <dependency>
@@ -94,18 +116,6 @@
             <version>3.1.0</version>
         </dependency>
         <!-- ModelMapper -->
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>
-
-        <!-- Validation -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-        <!-- Validation -->
     </dependencies>
     <dependencyManagement>
         <dependencies>
