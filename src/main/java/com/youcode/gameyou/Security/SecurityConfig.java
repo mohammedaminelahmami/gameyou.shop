@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final JwtAuthConverter jwtAuthConverter;
     private final String[] PUBLIC_ENDPOINTS = {
-        "/api/public/**",
+        "/api/register/**"
     };
 
     @Bean
@@ -27,15 +27,15 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests()
-                .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                .requestMatchers("/api/admin/**").hasRole(Role.ROLE_ADMIN.toString())
-                .requestMatchers("/api/seller/**").hasRole(Role.ROLE_SELLER.toString())
-                .requestMatchers("/api/client/**").hasRole(Role.ROLE_CLIENT.toString())
-                .and()
-            .oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(jwtAuthConverter);
-            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .requestMatchers(PUBLIC_ENDPOINTS).permitAll();
+//                .requestMatchers("/api/admin/**").hasRole(Role.ROLE_ADMIN.toString())
+//                .requestMatchers("/api/seller/**").hasRole(Role.ROLE_SELLER.toString())
+//                .requestMatchers("/api/client/**").hasRole(Role.ROLE_CLIENT.toString())
+//                .and()
+//            .oauth2ResourceServer()
+//                .jwt()
+//                .jwtAuthenticationConverter(jwtAuthConverter);
+//            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
 

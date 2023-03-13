@@ -4,10 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/public")
-public class PublicController {
-    @RequestMapping("/test")
-    public String test() {
-        return "public test";
-    }
+@RequestMapping("/api/seller")
+public class SellerController {
 }

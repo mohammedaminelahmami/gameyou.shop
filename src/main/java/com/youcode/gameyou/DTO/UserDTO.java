@@ -1,10 +1,7 @@
 package com.youcode.gameyou.DTO;
 
 import com.youcode.gameyou.Enum.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -12,7 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserDTO {
     private Long id;
-    private String fullname;
+    private String firstName;
+    private String lastName;
     private String email;
     private String hashedpassword;
     private String imagepath;
