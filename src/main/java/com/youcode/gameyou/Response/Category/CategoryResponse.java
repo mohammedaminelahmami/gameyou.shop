@@ -1,13 +1,11 @@
-package com.youcode.gameyou.DTO;
+package com.youcode.gameyou.Response.Category;
 
 import lombok.*;
 
 @Getter
 @Setter
-public class CategoryDTO {
-    private Long id;
+public class CategoryResponse {
     private String name;
     private String description;
     private String imagePath;
-    private Boolean isActive;
 }

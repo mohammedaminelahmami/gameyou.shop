@@ -94,7 +94,7 @@ public class KeycloakUtils {
             Response response = getRealm().users().create(userRepresentation);
             String userId = CreatedResponseUtil.getCreatedId(response);
             System.out.println("idUser: " + userId);
-            this.setCredentials(userId, userDTO.getHashedpassword());
+            this.setCredentials(userId, userDTO.getHashedPassword());
             System.out.println("from create kc : " + userDTO.getRole());
             addUserRole(userId, userDTO.getRole().toString());
             return userId;
@@ -111,7 +111,7 @@ public class KeycloakUtils {
         userRepresentation.setUsername(userDTO.getEmail());
         userRepresentation.setEnabled(true);
         userRepresentation.setEmail(userDTO.getEmail());
-        this.setCredentials(userId, userDTO.getHashedpassword());
+        this.setCredentials(userId, userDTO.getHashedPassword());
 
         try {
             UserResource userResource = getRealm().users().get(userId);

@@ -26,10 +26,10 @@ public class UserParent {
     private String email;
 
     @Column(name = "hashedpassword")
-    private String hashedpassword;
+    private String hashedPassword;
 
     @Column(name = "imagepath")
-    private String imagepath;
+    private String imagePath;
 
     @Column(name = "address")
     private String address;
@@ -51,6 +51,9 @@ public class UserParent {
 
     @Column(name = "role")
     private Role role;
+
+    @Column(name = "isactive")
+    private Boolean isActive;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
