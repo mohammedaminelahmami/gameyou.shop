@@ -1,64 +1,55 @@
 package com.youcode.gameyou.Service;
 
-import com.youcode.gameyou.DTO.Mapper.IMapperDTO;
 import com.youcode.gameyou.DTO.ProductDTO;
 import com.youcode.gameyou.Entity.Product;
+import com.youcode.gameyou.Mapper.Mapper;
 import com.youcode.gameyou.Repository.ProductRepository;
-import com.youcode.gameyou.Request.Product.AddProductRequest;
-import com.youcode.gameyou.Request.Product.UpdateProductRequest;
-import com.youcode.gameyou.Response.Product.ProductResponse;
 import com.youcode.gameyou.Service.Interfaces.IProductService;
-import lombok.RequiredArgsConstructor;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@Transactional
+@AllArgsConstructor
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
-    private final IMapperDTO<ProductResponse, Product> mapper;
+    private final Mapper<ProductDTO, Product> mapper;
+
     @Override
-    public void save(AddProductRequest addProductRequest) {
-        // map productRequest to productDTO
-        ProductDTO productDTO = ProductDTO.builder()
-                                .name(addProductRequest.getName())
-                                .quantity(addProductRequest.getQuantity())
-                                .title(addProductRequest.getTitle())
-                                .description(addProductRequest.getDescription())
-                                .price(addProductRequest.getPrice())
-                                .build();
-        // map productDTO to entity
-        Product product = Product.builder()
-                            .name(productDTO.getName())
-                            .quantity(productDTO.getQuantity())
-                            .title(productDTO.getTitle())
-                            .description(productDTO.getDescription())
-                            .price(productDTO.getPrice())
-                            .build();
-        productRepository.save(product);
+    public void save(ProductDTO addProductDTO) {
+        // map productDTO to productEntity
+        Product product = mapper.convertAtoB(addProductDTO, Product.class);
+        product.setIsActive(true);
+        productRepository.save(product); // save
     }
 
     @Override
-    public void update(UpdateProductRequest updateProductRequest) {
-        // find the product
-        Product product = productRepository.findById(Long.parseLong(updateProductRequest.getId())).orElseThrow(() -> new RuntimeException("Product not found !"));
-        if(!updateProductRequest.getName().isEmpty()) product.setName(updateProductRequest.getName());
-        if(!updateProductRequest.getQuantity().isEmpty()) product.setQuantity(updateProductRequest.getQuantity());
-        if(!updateProductRequest.getTitle().isEmpty()) product.setTitle(updateProductRequest.getTitle());
-        if(!updateProductRequest.getDescription().isEmpty()) product.setDescription(updateProductRequest.getDescription());
-        if(!String.valueOf(updateProductRequest.getPrice()).isEmpty()) product.setPrice(updateProductRequest.getPrice());
-        // save the update
+    public void update(ProductDTO updaProductDTO, Long id) {
+        Product findProductById = productRepository.findById(id).orElseThrow(() -> new RuntimeException("product not found"));
+        // map productEntity to productDTO
+        ProductDTO productDTO = mapper.convertBtoA(findProductById, ProductDTO.class);
+
+        if(updaProductDTO.getName() != null) productDTO.setName(updaProductDTO.getName());
+        if(updaProductDTO.getQuantity() != null) productDTO.setQuantity(updaProductDTO.getQuantity());
+        if(updaProductDTO.getTitle() != null) productDTO.setTitle(updaProductDTO.getTitle());
+        if(updaProductDTO.getDescription() != null) productDTO.setDescription(updaProductDTO.getDescription());
+        if(updaProductDTO.getPrice() != null) productDTO.setPrice(updaProductDTO.getPrice());
+        if(updaProductDTO.getIsActive() != null) productDTO.setIsActive(updaProductDTO.getIsActive());
+
+        // map productDTO to productEntity
+        Product product = mapper.convertAtoB(productDTO, Product.class);
+        // save the changes
         productRepository.save(product);
     }
 
     @Override
     public void delete(Long id) {
-        // find the product
-        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found !"));
-        // delete the product
-        productRepository.delete(product);
+        Product findProductById = productRepository.findById(id).orElseThrow(() -> new RuntimeException("product not found"));
+        productRepository.delete(findProductById);
     }
 
     @Override
@@ -67,32 +58,19 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductResponse getOne(Long id) {
-        // get the entity
-        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
-        // map product to productDTO
-        ProductDTO productDTO = ProductDTO.builder()
-                                .name(product.getName())
-                                .quantity(product.getQuantity())
-                                .title(product.getTitle())
-                                .description(product.getDescription())
-                                .price(product.getPrice())
-                                .build();
-        // map productDTO to productResponse
-        ProductResponse productResponse = ProductResponse.builder()
-                                            .name(productDTO.getName())
-                                            .quantity(productDTO.getQuantity())
-                                            .title(productDTO.getTitle())
-                                            .description(productDTO.getDescription())
-                                            .price(productDTO.getPrice())
-                                            .build();
-        return productResponse;
+    public ProductDTO getOne(Long id) {
+        Product findProductById = productRepository.findById(id).orElseThrow(() -> new RuntimeException("product not found"));
+        // map productEntity to productDTO
+        ProductDTO productDTO = mapper.convertBtoA(findProductById, ProductDTO.class);
+        return productDTO;
     }
 
     @Override
-    public List<ProductResponse> getAll(int page, int size) {
+    public List<ProductDTO> getAll(int page, int size) {
+        if(page > 0) page--;
         List<Product> products = productRepository.findAll(PageRequest.of(page, size)).stream().toList();
-        List<ProductResponse> productResponses = mapper.convertListToListDto(products, ProductResponse.class);
-        return productResponses;
+        // map productListEntity to productListDTO
+        List<ProductDTO> productDTOS = mapper.convertListBToListA(products, ProductDTO.class);
+        return productDTOS;
     }
 }

@@ -2,15 +2,12 @@ package com.youcode.gameyou.Request.Client;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@Builder
 public class AddNewClientRequest {
     @NotBlank(message = "firstName is required")
     private String firstName;

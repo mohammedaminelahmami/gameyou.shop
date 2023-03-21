@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class UserDTO {
+public class SellerDTO {
     private Long id;
     private String firstName;
     private String lastName;

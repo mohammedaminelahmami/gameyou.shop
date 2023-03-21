@@ -16,5 +16,5 @@ public class UpdateClientInfoRequest {
     private String email;
 
     @NotBlank(message = "password is required")
-    private String password;
+    private String hashedPassword;
 }

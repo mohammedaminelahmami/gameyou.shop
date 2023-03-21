@@ -1,15 +1,12 @@
 package com.youcode.gameyou.Repository;
 
-import com.youcode.gameyou.Entity.Client;
+import com.youcode.gameyou.Entity.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {
-    Optional<Client> findByEmail(String email);
-    Page findAll(Pageable pageable);
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+    Page<Category> findAll(Pageable pageable);
 }

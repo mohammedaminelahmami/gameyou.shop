@@ -24,10 +24,10 @@ public class Category {
     private String description;
 
     @Column(name = "imagepath")
-    private String imagepath;
+    private String imagePath;
 
     @Column(name = "isactive")
-    private Boolean isactive;
+    private Boolean isActive;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

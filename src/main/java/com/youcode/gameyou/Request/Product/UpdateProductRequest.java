@@ -10,10 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class UpdateProductRequest {
-    private String id;
     private String name;
     private String quantity;
     private String title;
     private String description;
-    private double price;
+    private String price;
 }

@@ -1,13 +1,14 @@
 package com.youcode.gameyou.DTO;
 
 import com.youcode.gameyou.Enum.Role;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Getter
 @Setter
-public class UserDTO {
+public class AdminDTO {
     private Long id;
     private String firstName;
     private String lastName;

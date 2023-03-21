@@ -1,5 +1,6 @@
-package com.youcode.gameyou.DTO.Mapper;
+package com.youcode.gameyou.Mapper;
 
+import com.youcode.gameyou.Mapper.Interfaces.IMapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -10,41 +11,41 @@ import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
-public class MapperDTO<D, E> implements IMapperDTO<D, E> {
+public class Mapper<A, B> implements IMapper<A, B> {
     private final ModelMapper mapper;
     @Override
-    public D convertToDTO(E entity, Class<D> dtoClass) {
-        if(entity == null) {
+    public A convertBtoA(B b, Class<A> aClass) {
+        if(b == null) {
             return null;
         }
         // mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT).setPropertyCondition(Conditions.isNotNull());
-        return mapper.map(entity, dtoClass);
+        return mapper.map(b, aClass);
     }
 
     @Override
-    public E convertToEntity(D dto, Class<E> entityClass) {
-        if(dto == null) {
+    public B convertAtoB(A a, Class<B> bClass) {
+        if(a == null) {
             return null;
         }
         // mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT).setPropertyCondition(Conditions.isNotNull());
-        return mapper.map(dto, entityClass);
+        return mapper.map(a, bClass);
     }
 
     @Override
-    public List<D> convertListToListDto(List<E> listEntity, Class<D> dtoClass) {
-        if(listEntity == null) {
+    public List<A> convertListBToListA(List<B> listB, Class<A> aClass) {
+        if(listB == null) {
             return Collections.emptyList();
         }
-        return listEntity.stream().map((entity) -> convertToDTO(entity, dtoClass)).toList(); // immutable
+        return listB.stream().map((entity) -> convertBtoA(entity, aClass)).toList(); // immutable
         // return listEntity.stream().map((entity) -> convertToDTO(entity, dtoClass)).collect(Collectors.toList()); // mutable
     }
 
     @Override
-    public List<E> convertListToListEntity(List<D> listDto, Class<E> entityClass) {
-        if(listDto == null) {
+    public List<B> convertListAToListB(List<A> listA, Class<B> bClass) {
+        if(listA == null) {
             return Collections.emptyList();
         }
-        return listDto.stream().map(dto -> convertToEntity(dto, entityClass)).collect(Collectors.toList());
+        return listA.stream().map(dto -> convertAtoB(dto, bClass)).collect(Collectors.toList());
     }
 
 //    @Override

@@ -1,9 +1,7 @@
 package com.youcode.gameyou.Entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -13,8 +11,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Builder
-@RequiredArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +30,10 @@ public class Product {
     private String description;
 
     @Column(name = "price")
-    private double price;
+    private String price;
 
     @Column(name = "isactive")
-    private Boolean isactive;
+    private Boolean isActive;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

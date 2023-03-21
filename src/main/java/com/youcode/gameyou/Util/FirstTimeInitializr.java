@@ -27,7 +27,7 @@ public class FirstTimeInitializr implements CommandLineRunner {
             try {
                 Admin admin = new Admin();
                 admin.setEmail("admin@gmail.com");
-                admin.setHashedpassword(passwordEncoder.encode("test2009"));
+                admin.setHashedPassword(passwordEncoder.encode("test2009"));
 
                 adminRepository.save(admin);
             }catch (Exception e){
@@ -38,7 +38,7 @@ public class FirstTimeInitializr implements CommandLineRunner {
             try {
                 Seller seller = new Seller();
                 seller.setEmail("seller@gmail.com");
-                seller.setHashedpassword(passwordEncoder.encode("seller0029+0"));
+                seller.setHashedPassword(passwordEncoder.encode("seller0029+0"));
 
                 sellerRepository.save(seller);
             }catch (Exception e){
@@ -49,7 +49,7 @@ public class FirstTimeInitializr implements CommandLineRunner {
             try {
                 Client client = new Client();
                 client.setEmail("client@gmail.com");
-                client.setHashedpassword(passwordEncoder.encode("client0029+0"));
+                client.setHashedPassword(passwordEncoder.encode("client0029+0"));
 
                 clientRepository.save(client);
             }catch (Exception e){

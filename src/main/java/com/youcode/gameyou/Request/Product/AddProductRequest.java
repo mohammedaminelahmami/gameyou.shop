@@ -24,5 +24,5 @@ public class AddProductRequest {
     private String description;
 
     @NotBlank(message = "Price is required")
-    private double price;
+    private String price;
 }

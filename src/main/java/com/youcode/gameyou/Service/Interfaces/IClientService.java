@@ -1,17 +1,14 @@
 package com.youcode.gameyou.Service.Interfaces;
 
-import com.youcode.gameyou.Request.Client.AddNewClientRequest;
-import com.youcode.gameyou.Request.Client.UpdateClientInfoRequest;
-import com.youcode.gameyou.Request.Client.UpdateClientPassword;
+import com.youcode.gameyou.DTO.ClientDTO;
 import com.youcode.gameyou.Response.Client.ClientResponse;
 
 import java.util.List;
 
 public interface IClientService {
-    ClientResponse save(AddNewClientRequest addNewClientRequest);
-    ClientResponse getOne(String id);
-    List<ClientResponse> getAll(int page, int size);
-    ClientResponse updateInfo(UpdateClientInfoRequest updateClientInfoRequest);
-    void updatePassword(UpdateClientPassword updateClientPassword);
-    void delete(String id);
+    ClientDTO save (ClientDTO addNewClientDTO);
+    ClientDTO updateInfo (ClientDTO updateClientInfoDTO, Long id);
+    void delete (Long id);
+    ClientDTO getOne (Long id);
+    List<ClientDTO> getAll (int page, int size);
 }

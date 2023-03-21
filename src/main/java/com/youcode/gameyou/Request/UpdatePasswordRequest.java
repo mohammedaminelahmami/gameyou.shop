@@ -1,4 +1,4 @@
-package com.youcode.gameyou.Request.Client;
+package com.youcode.gameyou.Request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor
-public class UpdateClientPassword {
+public class UpdatePasswordRequest {
     @NotBlank(message = "oldPassword is required")
     private String oldPassword;
 
