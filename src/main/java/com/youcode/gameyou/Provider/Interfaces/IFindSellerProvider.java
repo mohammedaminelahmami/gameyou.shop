@@ -1,7 +1,7 @@
 package com.youcode.gameyou.Provider.Interfaces;
 
-import com.youcode.gameyou.Repository.SellerRepository;
+import com.youcode.gameyou.Entity.Seller;
 
 public interface IFindSellerProvider {
-    SellerRepository findSeller();
+    Seller findSeller(Long id);
 }

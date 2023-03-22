@@ -17,7 +17,7 @@ public class FindClientProvider implements IFindClientProvider {
     @Override
     public Client findClient(Long id) {
         Client findClient = (Client) userTypeRepositoryFactory.getUserTypeRepository("client").findById(id)
-                .orElseThrow(() -> new ApiException("User not found", HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new ApiException("Client not found", HttpStatus.BAD_REQUEST));
         return findClient;
     }
 }

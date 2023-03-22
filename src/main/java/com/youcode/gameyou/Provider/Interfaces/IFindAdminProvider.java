@@ -1,7 +1,7 @@
 package com.youcode.gameyou.Provider.Interfaces;
 
-import com.youcode.gameyou.Repository.AdminRepository;
+import com.youcode.gameyou.Entity.Admin;
 
 public interface IFindAdminProvider {
-    AdminRepository findAdmin();
+    Admin findAdmin(Long id);
 }

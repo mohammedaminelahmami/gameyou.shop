@@ -1,5 +1,6 @@
 package com.youcode.gameyou.Factory;
 
+import com.youcode.gameyou.Entity.UserParent;
 import com.youcode.gameyou.Factory.Interfaces.IUserTypeRepositoryFactory;
 import com.youcode.gameyou.Repository.AdminRepository;
 import com.youcode.gameyou.Repository.ClientRepository;
@@ -15,7 +16,7 @@ public class UserTypeRepositoryFactory implements IUserTypeRepositoryFactory {
     private final SellerRepository sellerRepository;
     private final ClientRepository clientRepository;
     @Override
-    public <T extends JpaRepository<?, Long>> T getUserTypeRepository(String userType) {
+    public <T extends JpaRepository<? extends UserParent, Long>> T getUserTypeRepository(String userType) {
         switch (userType)
         {
             case "admin" -> {
