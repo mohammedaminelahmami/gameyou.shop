@@ -50,6 +50,7 @@ public class UserParent {
     private String zipcode;
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column(name = "isactive")

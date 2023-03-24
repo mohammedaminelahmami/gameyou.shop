@@ -2,9 +2,9 @@ package com.youcode.gameyou.Factory;
 
 import com.youcode.gameyou.Entity.UserParent;
 import com.youcode.gameyou.Factory.Interfaces.IFindUserFactory;
-import com.youcode.gameyou.Provider.FindAdminProvider;
-import com.youcode.gameyou.Provider.FindClientProvider;
-import com.youcode.gameyou.Provider.FindSellerProvider;
+import com.youcode.gameyou.Provider.FindUser.FindAdminProvider;
+import com.youcode.gameyou.Provider.FindUser.FindClientProvider;
+import com.youcode.gameyou.Provider.FindUser.FindSellerProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
