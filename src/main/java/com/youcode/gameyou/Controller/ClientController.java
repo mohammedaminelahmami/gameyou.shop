@@ -26,11 +26,14 @@ public class ClientController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping("/updateInfo/{id}")
-    public void updateInfo (@RequestBody @Valid UpdateClientInfoRequest updateClientInfoRequest, @PathVariable Long id) {
+    public ClientResponse updateInfo (@RequestBody @Valid UpdateClientInfoRequest updateClientInfoRequest, @PathVariable Long id) {
         // map updateClientInfoRequest to ClientDTO
         ClientDTO clientDTO = new ClientDTO();
         BeanUtils.copyProperties(updateClientInfoRequest, clientDTO);
-        clientService.updateInfo(clientDTO, id);
+        ClientDTO clientDTOAfterUpdate = clientService.updateInfo(clientDTO, id);
+        // map clientDTO to clientResponse
+        ClientResponse clientResponse = mapper.convertAtoB(clientDTO, ClientResponse.class);
+        return clientResponse;
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)

@@ -1,7 +1,6 @@
 package com.youcode.gameyou.Service.Interfaces;
 
 import com.youcode.gameyou.DTO.ClientDTO;
-import com.youcode.gameyou.Response.Client.ClientResponse;
 
 import java.util.List;
 
