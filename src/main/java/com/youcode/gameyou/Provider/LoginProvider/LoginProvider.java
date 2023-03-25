@@ -1,11 +1,7 @@
 //package com.youcode.gameyou.Provider.LoginProvider;
 //
-//import com.youcode.gameyou.DTO.AdminDTO;
 //import com.youcode.gameyou.DTO.UserDTO;
-//import com.youcode.gameyou.Entity.Admin;
-//import com.youcode.gameyou.Mapper.Mapper;
 //import com.youcode.gameyou.Provider.LoginProvider.interfaces.ILoginAsAdminProvider;
-//import com.youcode.gameyou.Repository.AdminRepository;
 //import com.youcode.gameyou.Response.Auth.AuthResponse;
 //import com.youcode.gameyou.Security.config.JwtUtil;
 //import com.youcode.gameyou.Service.UserService;
@@ -21,12 +17,12 @@
 //
 //@Component
 //@AllArgsConstructor
-//public class LoginAsAdminProvider implements ILoginAsAdminProvider {
+//public class LoginProvider implements ILoginAsAdminProvider {
 //    private final UserService userService;
 //    private final JwtUtil jwtUtil;
 //    private final AuthenticationManager authenticationManager;
 //    @Override
-//    public ResponseEntity<HashMap<String, Object>> login(UserDTO loginRequestDTO, String type) {
+//    public ResponseEntity<HashMap<String, Object>> login(UserDTO loginRequestDTO) {
 //        HashMap<String, Object> response = new HashMap<>();
 //        UserDetails user = userService.loadUserByUsername(loginRequestDTO.getEmail());
 //
