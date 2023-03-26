@@ -2,10 +2,12 @@ package com.youcode.gameyou.Security.filter;
 
 import com.youcode.gameyou.Security.config.JwtUtil;
 import com.youcode.gameyou.Service.UserService;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +31,7 @@ public class JwtAuthorisationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)throws ServletException, IOException
     {
-        final String authHeader = request.getHeader(JwtConstant.AUTORIZATION);
+        final String authHeader = request.getHeader(JwtConstant.AUTHORIZATION);
         final String userEmail;
         final String jwtToken;
         if(authHeader == null || !authHeader.startsWith(JwtConstant.BEARER)){
@@ -43,6 +45,8 @@ public class JwtAuthorisationFilter extends OncePerRequestFilter {
             if(jwtUtil.isTokenValid(jwtToken, userDetails))
             {
                 jwtUtil.registerAuthenticationTokenInContext(userDetails, request);
+            }else {
+                System.out.println("Token is not valid");
             }
         }
         filterChain.doFilter(request,response);

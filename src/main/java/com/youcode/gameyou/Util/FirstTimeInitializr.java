@@ -11,6 +11,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
+
 @Configuration
 @AllArgsConstructor
 public class FirstTimeInitializr implements CommandLineRunner {
@@ -21,12 +23,11 @@ public class FirstTimeInitializr implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // creates some users :
-
         if(false) {
             // create Admin :
             try {
                 Admin admin = new Admin();
-                admin.setEmail("admin@gmail.com");
+                admin.setEmail("admina@gmail.com");
                 admin.setHashedPassword(passwordEncoder.encode("test2009"));
 
                 adminRepository.save(admin);

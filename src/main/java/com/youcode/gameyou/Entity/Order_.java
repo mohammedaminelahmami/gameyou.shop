@@ -11,29 +11,20 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Product {
+public class Order_ {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "total")
+    private Double total;
 
-    @Column(name = "quantity")
-    private Integer quantity;
+    @Column(name = "status")
+    private String status;
 
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "price")
-    private Double price;
-
-    @Column(name = "isactive")
-    private Boolean isActive;
+    @Column(name = "payment_type")
+    private String paymentType;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -48,17 +39,6 @@ public class Product {
         this.updatedAt = new Date();
     }
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn(name = "store_id")
-    private Store store;
-
-    @OneToMany(mappedBy = "product")
-    private List<Image> images = new ArrayList<>();
-
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "order")
     private List<OrderProduct> orderProducts = new ArrayList<>();
 }

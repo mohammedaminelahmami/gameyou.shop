@@ -59,7 +59,8 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDTO getOne(Long id) {
-        Product findProductById = productRepository.findById(id).orElseThrow(() -> new RuntimeException("product not found"));
+        Product findProductById = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("product not found"));
         // map productEntity to productDTO
         ProductDTO productDTO = mapper.convertBtoA(findProductById, ProductDTO.class);
         return productDTO;

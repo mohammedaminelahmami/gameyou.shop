@@ -27,7 +27,7 @@ public class Store {
     private String imagePath;
 
     @Column(name = "stars")
-    private int stars;
+    private Integer stars;
 
     @Column(name = "isactive")
     private Boolean isActive;

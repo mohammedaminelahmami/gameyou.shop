@@ -1,4 +1,4 @@
-package com.youcode.gameyou.Provider.FindUser.Interfaces;
+package com.youcode.gameyou.Provider.FindUserProvider.Interfaces;
 
 import com.youcode.gameyou.Entity.Admin;
 

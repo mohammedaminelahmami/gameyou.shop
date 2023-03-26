@@ -21,7 +21,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private String jwtSigningKey = "mySecretCode123";
+    private String jwtSigningKey = "secretKey123MMM";
     public String extractUsername(String token){
         return extractClaim(token, Claims::getSubject);
     }
@@ -60,7 +60,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
-                .claim("authorities", userDetails.getAuthorities())
+                .claim("roles", userDetails.getAuthorities())
                 .setIssuedAt(currentTime)
                 .setExpiration(currentTimeExp)
                 .signWith(SignatureAlgorithm.HS256, jwtSigningKey).compact();

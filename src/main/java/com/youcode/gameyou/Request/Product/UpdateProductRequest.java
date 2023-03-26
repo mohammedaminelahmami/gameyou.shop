@@ -11,7 +11,7 @@ import lombok.Setter;
 @Builder
 public class UpdateProductRequest {
     private String name;
-    private String quantity;
+    private Integer quantity;
     private String title;
     private String description;
     private String price;
