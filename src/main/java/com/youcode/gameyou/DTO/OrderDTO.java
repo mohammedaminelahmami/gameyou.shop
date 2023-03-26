@@ -1,7 +1,5 @@
 package com.youcode.gameyou.DTO;
 
-import com.youcode.gameyou.Entity.Product;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,14 +9,12 @@ import java.util.List;
 
 @Getter
 @Setter
-public class StoreDTO {
+public class OrderDTO {
     private Long id;
-    private String name;
-    private String description;
-    private String imagePath;
-    private Integer stars;
-    private Boolean isActive;
+    private Double total;
+    private String status;
+    private String paymentType;
     private Date createdAt = new Date();
     private Date updatedAt = new Date();
-    private List<Product> products = new ArrayList<>();
+    private List<OrderProductDTO> orderProducts = new ArrayList<>();
 }

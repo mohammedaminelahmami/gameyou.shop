@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +27,16 @@ public class AuthService implements IAuthService {
     public ResponseEntity<HashMap<String, Object>> login(UserDTO loginRequestDTO) {
         HashMap<String, Object> response = new HashMap<>();
         UserDetails user = userService.loadUserByUsername(loginRequestDTO.getEmail());
-        System.out.println(user.getAuthorities());
+
         if(user != null) {
-            authenticationManager.authenticate(
+            Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequestDTO.getEmail(),
                             loginRequestDTO.getHashedPassword())
             );
+            // Set the authentication in the Security Context
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             response.put("accessToken", jwtUtil.generateToken(user));
             return ResponseEntity.ok(response);
         }

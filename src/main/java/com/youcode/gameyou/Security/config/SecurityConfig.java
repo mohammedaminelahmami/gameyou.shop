@@ -36,34 +36,9 @@ public class SecurityConfig {
     private final UserService userService;
     private AuthenticationConfiguration config;
     private final PasswordEncoder passwordEncoder;
+
     private final String[] PUBLIC_ENDPOINTS = {
             "/api/authentication/**",
-            // ...
-    };
-
-    private final String[] ADMIN_ENDPOINTS = {
-            "/api/admin/**",
-            "/api/client/**",
-            "/api/seller/**",
-            "/api/product/**",
-            "/api/category/**",
-            "/api/order/**"
-            // ...
-    };
-
-    private final String[] CLIENT_ENDPOINTS = {
-            "/api/client/**",
-            "/api/product/**",
-            "/api/category/**",
-            "/api/order/**"
-            // ...
-    };
-
-    private final String[] SELLER_ENDPOINTS = {
-            "/api/seller/**",
-            "/api/product/**",
-            "/api/category/**",
-            "/api/order/**"
             // ...
     };
 
@@ -74,9 +49,6 @@ public class SecurityConfig {
             .cors().and()
             .authorizeHttpRequests()
             .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-            .requestMatchers(ADMIN_ENDPOINTS).hasRole(Role.ROLE_ADMIN.toString())
-            .requestMatchers(SELLER_ENDPOINTS).hasRole(Role.ROLE_SELLER.toString())
-            .requestMatchers(CLIENT_ENDPOINTS).hasRole(Role.ROLE_CLIENT.toString())
             .anyRequest()
             .authenticated()
             .and()

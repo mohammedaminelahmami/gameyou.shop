@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 @AllArgsConstructor
 public class RegisterAsSellerProvider implements IRegisterAsSellerProvider {
@@ -18,11 +20,11 @@ public class RegisterAsSellerProvider implements IRegisterAsSellerProvider {
     private final SellerRepository sellerRepository;
     @Override
     public void register(SellerDTO registerRequestDTO) {
-        sellerRepository.findByEmail(registerRequestDTO.getEmail())
-                .orElseThrow(() -> new ApiException("Email already taken", HttpStatus.BAD_REQUEST));
-
+        if(sellerRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) throw new ApiException("Email already taken", HttpStatus.BAD_REQUEST);
         registerRequestDTO.setIsActive(true);
         registerRequestDTO.setRole(Role.ROLE_SELLER);
+        registerRequestDTO.setCreatedAt(new Date());
+        registerRequestDTO.setUpdatedAt(new Date());
 
         // map the DTO to the entity
         Seller seller = mapper.convertAtoB(registerRequestDTO, Seller.class);

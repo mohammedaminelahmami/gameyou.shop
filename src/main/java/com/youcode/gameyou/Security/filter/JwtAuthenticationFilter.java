@@ -38,6 +38,6 @@ public class JwtAuthenticationFilter  extends UsernamePasswordAuthenticationFilt
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         User principal = (User) authResult.getPrincipal();
         String token = new JwtUtil().generateToken(principal);
-        response.addHeader(JwtConstant.AUTORIZATION, JwtConstant.BEARER+token);
+        response.addHeader(JwtConstant.AUTHORIZATION, JwtConstant.BEARER+token);
     }
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ProductResponse {
     private String name;
-    private String quantity;
+    private Integer quantity;
     private String title;
     private String description;
     private String price;
