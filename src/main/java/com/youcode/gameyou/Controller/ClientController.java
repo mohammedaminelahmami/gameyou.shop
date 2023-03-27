@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -46,6 +47,13 @@ public class ClientController {
         BeanUtils.copyProperties(userDTO, clientDTO);
         ClientResponse clientResponse = mapper.convertAtoB(clientDTO, ClientResponse.class);
         return clientResponse;
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping("/updateImageProfile")
+    public String updateImageProfile(@RequestParam MultipartFile imageFile) {
+        // update image profile and return the path of the image
+        return clientService.uploadImage(imageFile);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
