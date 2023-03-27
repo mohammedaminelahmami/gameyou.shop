@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 public class SellerService implements ISellerService {
+    private final UploadFileService uploadFileService;
+    private final AuthService authService;
     private final SellerRepository sellerRepository;
     private final Mapper<SellerDTO, Seller> mapper;
     private PasswordEncoder passwordEncoder;
@@ -83,5 +86,20 @@ public class SellerService implements ISellerService {
         // map sellers to sellerDTOS
         List<SellerDTO> sellerDTOS = mapper.convertListBToListA(sellers, SellerDTO.class);
         return sellerDTOS;
+    }
+
+    @Override
+    public String uploadImage (MultipartFile imageFile) {
+        if(imageFile == null) throw new RuntimeException("image is null");
+
+        Seller seller = authService.getAuthenticatedSeller();
+        if (seller == null) throw new RuntimeException("seller not found");
+
+        String path = uploadFileService.getOnePath(imageFile);
+        if (path == null || path.equals("")) throw new RuntimeException("File not found");
+
+        seller.setImagePath(path);
+        sellerRepository.save(seller);
+        return path;
     }
 }

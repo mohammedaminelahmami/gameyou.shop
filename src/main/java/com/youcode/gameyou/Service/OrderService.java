@@ -33,7 +33,7 @@ public class OrderService implements IOrderService {
                 Double price = orderDTO.getOrderProducts().get(i).getProduct().getPrice();
                 int quantity = orderDTO.getOrderProducts().get(i).getQuantity();
                 int discount = orderDTO.getOrderProducts().get(i).getDiscount();
-                // quantity * (price - (price * discount / 100))
+                // total price
                 total +=  quantity * (price - (price * discount / 100));
             }
 

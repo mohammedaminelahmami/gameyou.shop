@@ -1,6 +1,5 @@
 package com.youcode.gameyou.Security.config;
 
-import com.youcode.gameyou.Enum.Role;
 import com.youcode.gameyou.Security.filter.JwtAuthenticationFilter;
 import com.youcode.gameyou.Security.filter.JwtAuthorisationFilter;
 import com.youcode.gameyou.Service.UserService;

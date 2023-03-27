@@ -1,7 +1,13 @@
 package com.youcode.gameyou.Service;
 
 import com.youcode.gameyou.DTO.UserDTO;
+import com.youcode.gameyou.Entity.Admin;
+import com.youcode.gameyou.Entity.Client;
+import com.youcode.gameyou.Entity.Seller;
 import com.youcode.gameyou.Factory.RegisterFactory;
+import com.youcode.gameyou.Repository.AdminRepository;
+import com.youcode.gameyou.Repository.ClientRepository;
+import com.youcode.gameyou.Repository.SellerRepository;
 import com.youcode.gameyou.Security.config.JwtUtil;
 import com.youcode.gameyou.Service.Interfaces.IAuthService;
 import lombok.AllArgsConstructor;
@@ -22,6 +28,9 @@ public class AuthService implements IAuthService {
     private final UserService userService;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
+    private final ClientRepository clientRepository;
+    private final SellerRepository sellerRepository;
+    private final AdminRepository adminRepository;
 
     @Override
     public ResponseEntity<HashMap<String, Object>> login(UserDTO loginRequestDTO) {
@@ -47,5 +56,17 @@ public class AuthService implements IAuthService {
     @Override
     public void register(UserDTO RegisterRequestDTO, String roleType) {
         registerFactory.register(RegisterRequestDTO, roleType);
+    }
+
+    public Client getAuthenticatedClient() {
+        return clientRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
+    }
+
+    public Seller getAuthenticatedSeller() {
+        return sellerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
+    }
+
+    public Admin getAuthenticatedAdmin() {
+        return adminRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
     }
 }

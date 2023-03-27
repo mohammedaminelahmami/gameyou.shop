@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,9 +22,11 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 public class ClientService implements IClientService {
+    private final UploadFileService uploadFileService;
+    private final AuthService authService;
     private final ClientRepository clientRepository;
     private final Mapper<ClientDTO , Client> mapper;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public ClientDTO save(ClientDTO addNewClientDTO) {
@@ -85,5 +88,20 @@ public class ClientService implements IClientService {
         // map clients to clientDTOS
         List<ClientDTO> clientDTOS = mapper.convertListBToListA(clients, ClientDTO.class);
         return clientDTOS;
+    }
+
+    @Override
+    public String uploadImage (MultipartFile imageFile) {
+        if(imageFile == null) throw new RuntimeException("image is null");
+
+        Client client = authService.getAuthenticatedClient();
+        if (client == null) throw new RuntimeException("client not found");
+
+        String path = uploadFileService.getOnePath(imageFile);
+        if (path == null || path.equals("")) throw new RuntimeException("File not found");
+
+        client.setImagePath(path);
+        clientRepository.save(client);
+        return path;
     }
 }
