@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,7 +28,14 @@ public class ProductController {
         // map AddProductRequest to productDTO
         ProductDTO productDTO = new ProductDTO();
         BeanUtils.copyProperties(addProductRequest, productDTO);
+        // save product
         productService.save(productDTO);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/image/{id}")
+    public String saveImage (@RequestParam MultipartFile image, @PathVariable Long id) {
+        return productService.saveImage(image, id);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
