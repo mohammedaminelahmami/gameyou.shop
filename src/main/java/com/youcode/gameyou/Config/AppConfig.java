@@ -1,4 +1,4 @@
-package com.youcode.gameyou;
+package com.youcode.gameyou.Config;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @AllArgsConstructor
-public class Config {
+public class AppConfig {
     // ModelMapper is a Java library that helps with the mapping of objects between Java beans,
     // which can save developers time and reduce the amount of boilerplate code needed to perform these mappings.
     // It provides an easy-to-use API for mapping objects between different Java classes and can handle complex mapping scenarios.

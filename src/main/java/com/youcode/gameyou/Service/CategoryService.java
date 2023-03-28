@@ -19,7 +19,7 @@ import java.util.List;
 public class CategoryService implements ICategoryService {
     private final Mapper<CategoryDTO, Category> mapper;
     private final CategoryRepository categoryRepository;
-    privat final UploadFileService uploadFileService;
+    private final UploadFileService uploadFileService;
 
     @Override
     public void save(CategoryDTO addCategoryDTO, MultipartFile image) {
