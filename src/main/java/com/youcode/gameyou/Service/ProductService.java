@@ -1,14 +1,17 @@
 package com.youcode.gameyou.Service;
 
 import com.youcode.gameyou.DTO.ProductDTO;
+import com.youcode.gameyou.Entity.Image;
 import com.youcode.gameyou.Entity.Product;
 import com.youcode.gameyou.Mapper.Mapper;
+import com.youcode.gameyou.Repository.ImageRepository;
 import com.youcode.gameyou.Repository.ProductRepository;
 import com.youcode.gameyou.Service.Interfaces.IProductService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,14 +20,29 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
+    private final ImageRepository imageRepository;
     private final Mapper<ProductDTO, Product> mapper;
+    private final UploadFileService uploadFileService;
 
     @Override
     public void save(ProductDTO addProductDTO) {
         // map productDTO to productEntity
         Product product = mapper.convertAtoB(addProductDTO, Product.class);
         product.setIsActive(true);
+
         productRepository.save(product); // save
+    }
+
+    @Override
+    public String saveImage(MultipartFile imageProduct, Long productId) {
+        if(imageProduct == null) throw new RuntimeException("image is null");
+        String path = uploadFileService.getOnePath(imageProduct);
+        Image image = new Image();
+        image.setPath(path);
+        image.setProduct(productRepository.findById(productId).orElseThrow(() -> new RuntimeException("product not found")));
+        image.setExt("");
+        imageRepository.save(image);
+        return path;
     }
 
     @Override

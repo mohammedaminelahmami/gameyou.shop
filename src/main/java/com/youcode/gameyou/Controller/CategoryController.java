@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,11 +23,11 @@ public class CategoryController {
     private final Mapper<CategoryDTO, CategoryResponse> mapper;
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void save (@RequestBody @Valid AddCategoryRequest addCategoryRequest) {
+    public void save (@RequestBody @Valid AddCategoryRequest addCategoryRequest, @RequestParam MultipartFile image) {
         // map AddCategoryRequest to categoryDTO
         CategoryDTO categoryDTO = new CategoryDTO();
         BeanUtils.copyProperties(addCategoryRequest, categoryDTO);
-        categoryService.save(categoryDTO);
+        categoryService.save(categoryDTO, image);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
