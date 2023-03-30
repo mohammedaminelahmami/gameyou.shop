@@ -43,16 +43,16 @@ public class JwtUtil {
         return Jwts.parser().setSigningKey(jwtSigningKey).parseClaimsJws(token).getBody();
     }
 
-    public Boolean isTokenExpired(String token){
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(UserDetails userDetails, Long id){
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails);
+        return createToken(claims, userDetails, id);
     }
 
-    private String createToken(Map<String, Object> claims, UserDetails userDetails){
+    private String createToken(Map<String, Object> claims, UserDetails userDetails, Long id){
         Instant instant = Instant.now();
         Instant instantExp = instant.plus(JwtConstant.JWT_TOKEN_EXPIRATION_MINUTES, ChronoUnit.MINUTES);
         Date currentTime = Date.from(instant);
@@ -60,6 +60,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
+                .claim("id", id)
                 .claim("roles", userDetails.getAuthorities())
                 .setIssuedAt(currentTime)
                 .setExpiration(currentTimeExp)

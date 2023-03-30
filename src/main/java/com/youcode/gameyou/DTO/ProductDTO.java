@@ -20,7 +20,7 @@ public class ProductDTO {
     private String quantity;
     private String title;
     private String description;
-    private String price;
+    private Double price;
     private Boolean isActive;
     private Date createdAt = new Date();
     private Date updatedAt = new Date();
