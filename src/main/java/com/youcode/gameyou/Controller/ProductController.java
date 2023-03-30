@@ -2,7 +2,6 @@ package com.youcode.gameyou.Controller;
 
 import com.youcode.gameyou.DTO.ProductDTO;
 import com.youcode.gameyou.Mapper.Mapper;
-import com.youcode.gameyou.Request.Product.AddProductRequest;
 import com.youcode.gameyou.Request.Product.UpdateProductRequest;
 import com.youcode.gameyou.Response.Product.ProductResponse;
 import com.youcode.gameyou.Service.ProductService;
@@ -24,18 +23,15 @@ public class ProductController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void save (@RequestBody @Valid AddProductRequest addProductRequest) {
-        // map AddProductRequest to productDTO
-        ProductDTO productDTO = new ProductDTO();
-        BeanUtils.copyProperties(addProductRequest, productDTO);
+    public void save (@RequestParam("name") String name,
+                      @RequestParam("quantity") Integer quantity,
+                      @RequestParam("title") String title,
+                      @RequestParam("description") String description,
+                      @RequestParam("price") Double price,
+                      @RequestParam("categoryName") String categoryName,
+                      @RequestParam("images") MultipartFile[] images) {
         // save product
-        productService.save(productDTO);
-    }
-
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/image/{id}")
-    public String saveImage (@RequestParam MultipartFile image, @PathVariable Long id) {
-        return productService.saveImage(image, id);
+        productService.save(name, quantity, title, description, price, categoryName, images);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)

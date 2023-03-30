@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
-
 @RestController
 @RequestMapping("/api/authentication")
 @AllArgsConstructor
@@ -33,13 +32,13 @@ public class AuthenticationController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/register/{roleType}")
-    public void register (@RequestBody @Valid RegisterRequest registerRequest, @PathVariable String roleType) {
+    @PostMapping("/register")
+    public void register (@RequestBody @Valid RegisterRequest registerRequest) {
         if(!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) throw new ApiException("password and confirmPassword are not same", HttpStatus.BAD_REQUEST);
         // map RegisterRequest to UserDTO
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(registerRequest, userDTO);
         userDTO.setHashedPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        authService.register(userDTO, roleType);
+        authService.register(userDTO, registerRequest.getRoleType());
     }
 }

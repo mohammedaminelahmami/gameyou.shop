@@ -1,9 +1,11 @@
 package com.youcode.gameyou.Service;
 
 import com.youcode.gameyou.DTO.ProductDTO;
+import com.youcode.gameyou.Entity.Category;
 import com.youcode.gameyou.Entity.Image;
 import com.youcode.gameyou.Entity.Product;
 import com.youcode.gameyou.Mapper.Mapper;
+import com.youcode.gameyou.Repository.CategoryRepository;
 import com.youcode.gameyou.Repository.ImageRepository;
 import com.youcode.gameyou.Repository.ProductRepository;
 import com.youcode.gameyou.Service.Interfaces.IProductService;
@@ -20,26 +22,41 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
     private final ImageRepository imageRepository;
     private final Mapper<ProductDTO, Product> mapper;
     private final UploadFileService uploadFileService;
 
     @Override
-    public void save(ProductDTO addProductDTO) {
-        // map productDTO to productEntity
-        Product product = mapper.convertAtoB(addProductDTO, Product.class);
+    public void save(String name, Integer quantity, String title, String description, Double price, String categoryName, MultipartFile[] images) {
+        Product product = new Product();
+        product.setName(name);
+        product.setQuantity(quantity);
+        product.setTitle(title);
+        product.setDescription(description);
+        product.setPrice(price);
         product.setIsActive(true);
 
+        // search category by name
+        Category category = categoryRepository.findByName(categoryName).orElseThrow(()-> new RuntimeException("category not found"));
+        product.setCategory(category);
+
         productRepository.save(product); // save
+
+        // save images
+        for (MultipartFile image : images) {
+            saveImage(image, product);
+        }
     }
 
     @Override
-    public String saveImage(MultipartFile imageProduct, Long productId) {
-        if(imageProduct == null) throw new RuntimeException("image is null");
+    public String saveImage(MultipartFile imageProduct, Product product) {
+        if(imageProduct == null) throw new RuntimeException("image not found");
+        if(product == null) throw new RuntimeException("product not found");
         String path = uploadFileService.getOnePath(imageProduct);
         Image image = new Image();
         image.setPath(path);
-        image.setProduct(productRepository.findById(productId).orElseThrow(() -> new RuntimeException("product not found")));
+        image.setProduct(product);
         image.setExt("");
         imageRepository.save(image);
         return path;

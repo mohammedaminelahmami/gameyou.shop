@@ -25,4 +25,7 @@ public class AddProductRequest {
 
     @NotNull(message = "Price is required")
     private String price;
+
+    @NotNull(message = "categoryName is required")
+    private String categoryName;
 }
