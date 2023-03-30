@@ -29,9 +29,10 @@ public class ProductController {
                       @RequestParam("description") String description,
                       @RequestParam("price") Double price,
                       @RequestParam("categoryName") String categoryName,
+                      @RequestParam("idStore") Long idStore,
                       @RequestParam("images") MultipartFile[] images) {
         // save product
-        productService.save(name, quantity, title, description, price, categoryName, images);
+        productService.save(name, quantity, title, description, price, categoryName, idStore, images);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -59,8 +60,17 @@ public class ProductController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<ProductResponse> getAll (@RequestParam int page, @RequestParam int size) {
+    public List<ProductResponse> getAll (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         List<ProductDTO> productDTOS = productService.getAll(page, size);
+        // map productDTOS to productResponses
+        List<ProductResponse> productResponses = mapper.convertListAToListB(productDTOS, ProductResponse.class);
+        return productResponses;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/store/{idStore}")
+    public List<ProductResponse> getAll (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @PathVariable Long idStore) {
+        List<ProductDTO> productDTOS = productService.getAllProductsStore(page, size, idStore);
         // map productDTOS to productResponses
         List<ProductResponse> productResponses = mapper.convertListAToListB(productDTOS, ProductResponse.class);
         return productResponses;

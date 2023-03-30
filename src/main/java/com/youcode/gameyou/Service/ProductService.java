@@ -4,10 +4,12 @@ import com.youcode.gameyou.DTO.ProductDTO;
 import com.youcode.gameyou.Entity.Category;
 import com.youcode.gameyou.Entity.Image;
 import com.youcode.gameyou.Entity.Product;
+import com.youcode.gameyou.Entity.Store;
 import com.youcode.gameyou.Mapper.Mapper;
 import com.youcode.gameyou.Repository.CategoryRepository;
 import com.youcode.gameyou.Repository.ImageRepository;
 import com.youcode.gameyou.Repository.ProductRepository;
+import com.youcode.gameyou.Repository.StoreRepository;
 import com.youcode.gameyou.Service.Interfaces.IProductService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -23,12 +25,13 @@ import java.util.List;
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final StoreRepository storeRepository;
     private final ImageRepository imageRepository;
     private final Mapper<ProductDTO, Product> mapper;
     private final UploadFileService uploadFileService;
 
     @Override
-    public void save(String name, Integer quantity, String title, String description, Double price, String categoryName, MultipartFile[] images) {
+    public void save(String name, Integer quantity, String title, String description, Double price, String categoryName, Long idStore, MultipartFile[] images) {
         Product product = new Product();
         product.setName(name);
         product.setQuantity(quantity);
@@ -41,8 +44,11 @@ public class ProductService implements IProductService {
         Category category = categoryRepository.findByName(categoryName).orElseThrow(()-> new RuntimeException("category not found"));
         product.setCategory(category);
 
-        productRepository.save(product); // save
+        // search store by id
+        Store store = storeRepository.findById(idStore).orElseThrow(()-> new RuntimeException("store not found"));
+        product.setStore(store);
 
+        productRepository.save(product); // save
         // save images
         for (MultipartFile image : images) {
             saveImage(image, product);
@@ -105,6 +111,15 @@ public class ProductService implements IProductService {
     public List<ProductDTO> getAll(int page, int size) {
         if(page > 0) page--;
         List<Product> products = productRepository.findAll(PageRequest.of(page, size)).stream().toList();
+        // map productListEntity to productListDTO
+        List<ProductDTO> productDTOS = mapper.convertListBToListA(products, ProductDTO.class);
+        return productDTOS;
+    }
+
+    @Override
+    public List<ProductDTO> getAllProductsStore(int page, int size, Long idStore) {
+        if(page > 0) page--;
+        List<Product> products = productRepository.findAllByStoreId(PageRequest.of(page, size), idStore).stream().toList();
         // map productListEntity to productListDTO
         List<ProductDTO> productDTOS = mapper.convertListBToListA(products, ProductDTO.class);
         return productDTOS;

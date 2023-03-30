@@ -47,12 +47,12 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails, Long id){
+    public String generateToken(UserDetails userDetails, Long id, Long idStoreIfSeller){
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails, id);
+        return createToken(claims, userDetails, id, idStoreIfSeller);
     }
 
-    private String createToken(Map<String, Object> claims, UserDetails userDetails, Long id){
+    private String createToken(Map<String, Object> claims, UserDetails userDetails, Long id, Long idStoreIfSeller){
         Instant instant = Instant.now();
         Instant instantExp = instant.plus(JwtConstant.JWT_TOKEN_EXPIRATION_MINUTES, ChronoUnit.MINUTES);
         Date currentTime = Date.from(instant);
@@ -61,6 +61,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .claim("id", id)
+                .claim("idStore", idStoreIfSeller)
                 .claim("roles", userDetails.getAuthorities())
                 .setIssuedAt(currentTime)
                 .setExpiration(currentTimeExp)

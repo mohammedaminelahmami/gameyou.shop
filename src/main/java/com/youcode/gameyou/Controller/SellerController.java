@@ -2,10 +2,12 @@ package com.youcode.gameyou.Controller;
 
 import com.youcode.gameyou.DTO.SellerDTO;
 import com.youcode.gameyou.DTO.UserDTO;
+import com.youcode.gameyou.Entity.Seller;
 import com.youcode.gameyou.Mapper.Mapper;
 import com.youcode.gameyou.Request.Seller.UpdateSellerInfoRequest;
 import com.youcode.gameyou.Request.UpdatePasswordRequest;
 import com.youcode.gameyou.Response.Seller.SellerResponse;
+import com.youcode.gameyou.Service.AuthService;
 import com.youcode.gameyou.Service.SellerService;
 import com.youcode.gameyou.Service.UpdatePassword;
 import jakarta.validation.Valid;
@@ -24,6 +26,7 @@ public class SellerController {
     private final SellerService sellerService;
     private final UpdatePassword updatePassword;
     private final Mapper<SellerDTO, SellerResponse> mapper;
+    private final AuthService authService;
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping("/updateInfo/{id}")
@@ -68,6 +71,16 @@ public class SellerController {
         SellerDTO sellerDTO = sellerService.getOne(id);
         // map sellerDTO to sellerResponse
         SellerResponse sellerResponse = mapper.convertAtoB(sellerDTO, SellerResponse.class);
+        return sellerResponse;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/current")
+    public SellerResponse getCurrentSeller () {
+        Seller seller = authService.getAuthenticatedSeller();
+        // map seller to sellerResponse
+        SellerResponse sellerResponse = new SellerResponse();
+        BeanUtils.copyProperties(seller, sellerResponse);
         return sellerResponse;
     }
 
