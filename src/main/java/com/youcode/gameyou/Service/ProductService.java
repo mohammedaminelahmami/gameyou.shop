@@ -124,4 +124,13 @@ public class ProductService implements IProductService {
         List<ProductDTO> productDTOS = mapper.convertListBToListA(products, ProductDTO.class);
         return productDTOS;
     }
+
+    @Override
+    public List<ProductDTO> getAllProductsCategory(int page, int size, Long idCategory) {
+        if(page > 0) page--;
+        List<Product> products = productRepository.findAllByCategoryId(PageRequest.of(page, size), idCategory).stream().toList();
+        // map productListEntity to productListDTO
+        List<ProductDTO> productDTOS = mapper.convertListBToListA(products, ProductDTO.class);
+        return productDTOS;
+    }
 }

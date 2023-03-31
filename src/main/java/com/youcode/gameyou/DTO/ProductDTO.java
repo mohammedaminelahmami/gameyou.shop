@@ -17,7 +17,7 @@ import java.util.List;
 public class ProductDTO {
     private Long id;
     private String name;
-    private String quantity;
+    private Integer quantity;
     private String title;
     private String description;
     private Double price;

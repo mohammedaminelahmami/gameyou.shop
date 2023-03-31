@@ -24,9 +24,9 @@ public class ImageController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{id}")
-    public List<ImageResponse> getAllProductImages(@PathVariable Long id) {
-        List<ImageDTO> imageDTOS = imageService.getAllProductImage(id);
+    @GetMapping("/{idProduct}")
+    public List<ImageResponse> getAllProductImages(@PathVariable Long idProduct) {
+        List<ImageDTO> imageDTOS = imageService.getAllProductImage(idProduct);
         List<ImageResponse> imageResponses = mapper.convertListAToListB(imageDTOS, ImageResponse.class);
         return imageResponses;
     }

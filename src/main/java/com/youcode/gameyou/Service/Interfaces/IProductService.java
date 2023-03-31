@@ -14,5 +14,6 @@ public interface IProductService {
     void deleteAll();
     List<ProductDTO> getAll(int page, int size);
     List<ProductDTO> getAllProductsStore(int page, int size, Long idStore);
+    List<ProductDTO> getAllProductsCategory(int page, int size, Long idCategory);
     ProductDTO getOne(Long id);
 }

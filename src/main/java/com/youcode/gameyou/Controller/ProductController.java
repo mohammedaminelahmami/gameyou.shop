@@ -60,7 +60,7 @@ public class ProductController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<ProductResponse> getAll (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public List<ProductResponse> getAll (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "12") int size) {
         List<ProductDTO> productDTOS = productService.getAll(page, size);
         // map productDTOS to productResponses
         List<ProductResponse> productResponses = mapper.convertListAToListB(productDTOS, ProductResponse.class);
@@ -69,8 +69,17 @@ public class ProductController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/store/{idStore}")
-    public List<ProductResponse> getAll (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @PathVariable Long idStore) {
+    public List<ProductResponse> getAll (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "12") int size, @PathVariable Long idStore) {
         List<ProductDTO> productDTOS = productService.getAllProductsStore(page, size, idStore);
+        // map productDTOS to productResponses
+        List<ProductResponse> productResponses = mapper.convertListAToListB(productDTOS, ProductResponse.class);
+        return productResponses;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/category/{idCategory}")
+    public List<ProductResponse> getAllProductsCategory (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "12") int size, @PathVariable Long idCategory) {
+        List<ProductDTO> productDTOS = productService.getAllProductsCategory(page, size, idCategory);
         // map productDTOS to productResponses
         List<ProductResponse> productResponses = mapper.convertListAToListB(productDTOS, ProductResponse.class);
         return productResponses;
