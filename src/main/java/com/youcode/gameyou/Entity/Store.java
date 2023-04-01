@@ -47,4 +47,7 @@ public class Store {
 
     @OneToMany(mappedBy = "store")
     private List<Product> products = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store")
+    private List<Seller> sellers = new ArrayList<>();
 }

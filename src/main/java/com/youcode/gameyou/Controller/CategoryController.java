@@ -56,7 +56,7 @@ public class CategoryController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<CategoryResponse> getAll (@RequestParam int page, @RequestParam int size) {
+    public List<CategoryResponse> getAll (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "30") int size) {
         List<CategoryDTO> categoryDTOS = categoryService.getAll(page, size);
         // map categoryDTOS to categoryResponse
         List<CategoryResponse> categoryResponses = mapper.convertListAToListB(categoryDTOS, CategoryResponse.class);

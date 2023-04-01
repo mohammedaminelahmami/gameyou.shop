@@ -7,11 +7,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface IProductService {
-    void save(String name, Integer quantity, String title, String description, Double price, String categoryName, MultipartFile[] images);
+    void save(String name, Integer quantity, String title, String description, Double price, String categoryName,Long id, MultipartFile[] images);
     String saveImage(MultipartFile imageProduct, Product product);
     void update(ProductDTO updateProductDTO, Long id);
     void delete(Long id);
     void deleteAll();
     List<ProductDTO> getAll(int page, int size);
+    List<ProductDTO> getAllProductsStore(int page, int size, Long idStore);
+    List<ProductDTO> getAllProductsCategory(int page, int size, Long idCategory);
     ProductDTO getOne(Long id);
 }

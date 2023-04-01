@@ -1,5 +1,6 @@
 package com.youcode.gameyou.DTO;
 
+import com.youcode.gameyou.Entity.Store;
 import com.youcode.gameyou.Enum.Role;
 import lombok.*;
 
@@ -24,4 +25,5 @@ public class SellerDTO {
     private Boolean isActive;
     private Date createdAt;
     private Date updatedAt;
+    private Store store;
 }

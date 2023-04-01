@@ -45,17 +45,18 @@ public class AuthService implements IAuthService {
             );
             // Set the authentication in the Security Context
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
+            Long idStoreIfSeller = -1L;
             Long id = 0L;
             if(this.getAuthenticatedClient() != null) {
                 id = this.getAuthenticatedClient().getId();
             }else if(this.getAuthenticatedSeller() != null) {
                 id = this.getAuthenticatedSeller().getId();
+                idStoreIfSeller = this.getAuthenticatedSeller().getStore().getId();
             }else if(this.getAuthenticatedAdmin() != null) {
                 id = this.getAuthenticatedAdmin().getId();
             }
 
-            response.put("accessToken", jwtUtil.generateToken(user, id));
+            response.put("accessToken", jwtUtil.generateToken(user, id, idStoreIfSeller));
             return ResponseEntity.ok(response);
         }
         response.put("accessToken", null);
