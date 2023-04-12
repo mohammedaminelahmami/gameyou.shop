@@ -50,4 +50,7 @@ public class Store {
 
     @OneToMany(mappedBy = "store")
     private List<Seller> sellers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store")
+    private List<Order_> orders = new ArrayList<>();
 }

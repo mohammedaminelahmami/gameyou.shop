@@ -17,4 +17,6 @@ public class OrderDTO {
     private Date createdAt = new Date();
     private Date updatedAt = new Date();
     private List<OrderProductDTO> orderProducts = new ArrayList<>();
+    private Long storeId;
+    private Long clientId;
 }
