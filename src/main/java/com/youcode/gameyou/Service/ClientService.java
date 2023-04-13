@@ -52,7 +52,8 @@ public class ClientService implements IClientService {
 
         if(updateClientInfoDTO.getFirstName() != null) clientDTO.setFirstName(updateClientInfoDTO.getFirstName());
         if(updateClientInfoDTO.getLastName() != null) clientDTO.setLastName(updateClientInfoDTO.getLastName());
-        if(updateClientInfoDTO.getEmail() != null) clientDTO.setEmail(updateClientInfoDTO.getEmail());
+        if(updateClientInfoDTO.getPhone() != null) clientDTO.setPhone(updateClientInfoDTO.getPhone());
+        // if(updateClientInfoDTO.getEmail() != null) clientDTO.setEmail(updateClientInfoDTO.getEmail());
 
         // map clientDTO to client
         Client client = mapper.convertAtoB(clientDTO, Client.class);

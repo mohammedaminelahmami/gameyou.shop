@@ -2,7 +2,6 @@ package com.youcode.gameyou.Controller;
 
 import com.youcode.gameyou.DTO.OrderDTO;
 import com.youcode.gameyou.DTO.OrderProductDTO;
-import com.youcode.gameyou.Enum.OrderStatus;
 import com.youcode.gameyou.Mapper.Mapper;
 import com.youcode.gameyou.Request.Order.AddOrderRequest;
 import com.youcode.gameyou.Request.Order.OrderProductRequest;
@@ -45,8 +44,8 @@ public class OrderController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PutMapping("/{id}")
-    public void updateStatus(@RequestBody @Valid OrderStatus orderStatus, @PathVariable Long id) {
+    @PutMapping("/status/{id}")
+    public void updateStatus(@RequestParam String orderStatus, @PathVariable Long id) {
         orderService.updateOrderStatus(orderStatus, id);
     }
 
@@ -63,6 +62,24 @@ public class OrderController {
     @GetMapping
     public List<OrderResponse> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         List<OrderDTO> orderDTOList = orderService.getAll(page, size);
+        // map orderDTOList to orderResponseList
+        List<OrderResponse> orderResponseList = mapper.convertListAToListB(orderDTOList, OrderResponse.class);
+        return orderResponseList;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/client/{id}")
+    public List<OrderResponse> getAllOrderClient(@PathVariable Long id) {
+        List<OrderDTO> orderDTOList = orderService.getAllOrderByClientId(id);
+        // map orderDTOList to orderResponseList
+        List<OrderResponse> orderResponseList = mapper.convertListAToListB(orderDTOList, OrderResponse.class);
+        return orderResponseList;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/seller/{id}")
+    public List<OrderResponse> getAllOrderSeller(@PathVariable Long id) {
+        List<OrderDTO> orderDTOList = orderService.getAllOrderByStoreId(id);
         // map orderDTOList to orderResponseList
         List<OrderResponse> orderResponseList = mapper.convertListAToListB(orderDTOList, OrderResponse.class);
         return orderResponseList;

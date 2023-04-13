@@ -14,6 +14,7 @@ public class UpdateSellerInfoRequest {
     private String firstName;
     private String lastName;
     private String email;
+    private String phone;
 
     @NotBlank(message = "password is required")
     private String hashedPassword;

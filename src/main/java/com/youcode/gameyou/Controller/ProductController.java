@@ -84,4 +84,31 @@ public class ProductController {
         List<ProductResponse> productResponses = mapper.convertListAToListB(productDTOS, ProductResponse.class);
         return productResponses;
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/price/lessThan300/{idCategory}")
+    public List<ProductResponse> getAllProductsPriceLessThan300 (@PathVariable Long idCategory) {
+        List<ProductDTO> productDTOS = productService.getProductsLessThan300(idCategory);
+        // map productDTOS to productResponses
+        List<ProductResponse> productResponses = mapper.convertListAToListB(productDTOS, ProductResponse.class);
+        return productResponses;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/price/between300To1500/{idCategory}")
+    public List<ProductResponse> getAllProductsPriceBetween300To1500 (@PathVariable Long idCategory) {
+        List<ProductDTO> productDTOS = productService.getProductsBetween300And1500(idCategory);
+        // map productDTOS to productResponses
+        List<ProductResponse> productResponses = mapper.convertListAToListB(productDTOS, ProductResponse.class);
+        return productResponses;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/price/between1500To20000/{idCategory}")
+    public List<ProductResponse> getAllProductsPriceBetween1500To20000 (@PathVariable Long idCategory) {
+        List<ProductDTO> productDTOS = productService.getProductsBetween1500And20000(idCategory);
+        // map productDTOS to productResponses
+        List<ProductResponse> productResponses = mapper.convertListAToListB(productDTOS, ProductResponse.class);
+        return productResponses;
+    }
 }

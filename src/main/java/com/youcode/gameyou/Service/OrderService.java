@@ -2,10 +2,14 @@ package com.youcode.gameyou.Service;
 
 import com.youcode.gameyou.DTO.OrderDTO;
 import com.youcode.gameyou.Entity.Order_;
+import com.youcode.gameyou.Entity.Store;
+import com.youcode.gameyou.Entity.UserParent;
 import com.youcode.gameyou.Enum.OrderStatus;
 import com.youcode.gameyou.Exception.ApiException;
 import com.youcode.gameyou.Mapper.Mapper;
 import com.youcode.gameyou.Repository.OrderRepository;
+import com.youcode.gameyou.Repository.StoreRepository;
+import com.youcode.gameyou.Repository.UserParentRepository;
 import com.youcode.gameyou.Service.Interfaces.IOrderService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -21,6 +25,8 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
+    private final StoreRepository storeRepository;
+    private final UserParentRepository userParentRepository;
     private final Mapper<OrderDTO, Order_> mapper;
     @Override
     public OrderDTO save(OrderDTO orderDTO) {
@@ -42,6 +48,13 @@ public class OrderService implements IOrderService {
             orderDTO.setUpdatedAt(new Date());
             // map orderDTO to order
             Order_ order = mapper.convertAtoB(orderDTO, Order_.class);
+            // find store by id
+            Store store = storeRepository.findById(orderDTO.getStoreId())
+                    .orElseThrow(() -> new ApiException("store not found", HttpStatus.BAD_REQUEST));
+            order.setStore(store); // set store to order
+            // find user by id
+            UserParent client = userParentRepository.findById(orderDTO.getClientId()).orElseThrow(() -> new ApiException("user not found", HttpStatus.BAD_REQUEST));;
+            order.setUserParent(client); // set client to order
             orderRepository.save(order); // save order
         } catch (Exception e) {
             throw new ApiException("error : " + e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -56,11 +69,11 @@ public class OrderService implements IOrderService {
         orderRepository.delete(order);
     }
 
-    @Override
-    public void updateOrderStatus(OrderStatus status, Long id) {
+    public void updateOrderStatus(String status, Long id) {
         Order_ findOrder = orderRepository.findById(id)
                 .orElseThrow(() -> new ApiException("order not found", HttpStatus.BAD_REQUEST));
-        findOrder.setStatus(status.toString());
+        findOrder.setStatus(status);
+        orderRepository.save(findOrder);
     }
 
     @Override
@@ -76,6 +89,20 @@ public class OrderService implements IOrderService {
     public List<OrderDTO> getAll(int page, int size) {
         if(page > 0) page--;
         List<Order_> orders = orderRepository.findAll(PageRequest.of(page, size)).stream().toList();
+        // map list of orders to list of ordersDTO
+        List<OrderDTO> orderDTOS = mapper.convertListBToListA(orders, OrderDTO.class);
+        return orderDTOS;
+    }
+
+    public List<OrderDTO> getAllOrderByClientId(Long id) {
+        List<Order_> orders = orderRepository.queryfindAllByClientId(id);
+        // map list of orders to list of ordersDTO
+        List<OrderDTO> orderDTOS = mapper.convertListBToListA(orders, OrderDTO.class);
+        return orderDTOS;
+    }
+
+    public List<OrderDTO> getAllOrderByStoreId(Long id) {
+        List<Order_> orders = orderRepository.queryfindAllByStoreId(id);
         // map list of orders to list of ordersDTO
         List<OrderDTO> orderDTOS = mapper.convertListBToListA(orders, OrderDTO.class);
         return orderDTOS;
