@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderResponse {
+    private Long id;
     private Integer total;
     private String status;
     private String paymentType;

@@ -133,4 +133,25 @@ public class ProductService implements IProductService {
         List<ProductDTO> productDTOS = mapper.convertListBToListA(products, ProductDTO.class);
         return productDTOS;
     }
+
+    public List<ProductDTO> getProductsLessThan300(Long category_id) {
+        List<Product> products = productRepository.queryfindAllByPriceLessThan300(category_id);
+        // map productListEntity to productListDTO
+        List<ProductDTO> productDTOS = mapper.convertListBToListA(products, ProductDTO.class);
+        return productDTOS;
+    }
+
+    public List<ProductDTO> getProductsBetween300And1500(Long category_id) {
+        List<Product> products = productRepository.queryfindAllByPricebetween300To1500(category_id);
+        // map productListEntity to productListDTO
+        List<ProductDTO> productDTOS = mapper.convertListBToListA(products, ProductDTO.class);
+        return productDTOS;
+    }
+
+    public List<ProductDTO> getProductsBetween1500And20000(Long category_id) {
+        List<Product> products = productRepository.queryfindAllByPricebetween1500To20000(category_id);
+        // map productListEntity to productListDTO
+        List<ProductDTO> productDTOS = mapper.convertListBToListA(products, ProductDTO.class);
+        return productDTOS;
+    }
 }

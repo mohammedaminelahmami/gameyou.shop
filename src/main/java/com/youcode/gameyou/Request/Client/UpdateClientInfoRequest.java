@@ -14,6 +14,10 @@ public class UpdateClientInfoRequest {
     private String firstName;
     private String lastName;
     private String email;
+    private String phone;
+    private String address;
+    private String country;
+    private String city;
 
     @NotBlank(message = "password is required")
     private String hashedPassword;

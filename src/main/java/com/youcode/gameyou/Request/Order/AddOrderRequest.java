@@ -16,6 +16,6 @@ public class AddOrderRequest {
     @NotNull(message = "orderProducts required !")
     private List<OrderProductRequest> orderProducts = new ArrayList<>();
 
-    private Long storeId;
+    private Long storeId = 2L;
     private Long clientId;
 }

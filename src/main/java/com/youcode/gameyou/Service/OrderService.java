@@ -69,11 +69,11 @@ public class OrderService implements IOrderService {
         orderRepository.delete(order);
     }
 
-    @Override
-    public void updateOrderStatus(OrderStatus status, Long id) {
+    public void updateOrderStatus(String status, Long id) {
         Order_ findOrder = orderRepository.findById(id)
                 .orElseThrow(() -> new ApiException("order not found", HttpStatus.BAD_REQUEST));
-        findOrder.setStatus(status.toString());
+        findOrder.setStatus(status);
+        orderRepository.save(findOrder);
     }
 
     @Override
@@ -89,6 +89,20 @@ public class OrderService implements IOrderService {
     public List<OrderDTO> getAll(int page, int size) {
         if(page > 0) page--;
         List<Order_> orders = orderRepository.findAll(PageRequest.of(page, size)).stream().toList();
+        // map list of orders to list of ordersDTO
+        List<OrderDTO> orderDTOS = mapper.convertListBToListA(orders, OrderDTO.class);
+        return orderDTOS;
+    }
+
+    public List<OrderDTO> getAllOrderByClientId(Long id) {
+        List<Order_> orders = orderRepository.queryfindAllByClientId(id);
+        // map list of orders to list of ordersDTO
+        List<OrderDTO> orderDTOS = mapper.convertListBToListA(orders, OrderDTO.class);
+        return orderDTOS;
+    }
+
+    public List<OrderDTO> getAllOrderByStoreId(Long id) {
+        List<Order_> orders = orderRepository.queryfindAllByStoreId(id);
         // map list of orders to list of ordersDTO
         List<OrderDTO> orderDTOS = mapper.convertListBToListA(orders, OrderDTO.class);
         return orderDTOS;
